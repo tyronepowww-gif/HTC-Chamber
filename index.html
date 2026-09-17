@@ -1,0 +1,1945 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
+<meta name="theme-color" content="#090b12">
+<title>T-Chamber</title>
+
+<style>
+* {
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
+}
+
+html,
+body {
+  margin: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: #090b12;
+  color: #fff;
+  font-family: Arial, Helvetica, sans-serif;
+  touch-action: manipulation;
+}
+
+button {
+  font: inherit;
+}
+
+#app {
+  width: 100%;
+  max-width: 900px;
+  height: 100dvh;
+  margin: auto;
+  display: flex;
+  flex-direction: column;
+  background: #0d1019;
+}
+
+/* =========================
+   HEADER
+========================= */
+
+header {
+  min-height: 64px;
+  padding: 10px 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #292e40;
+  background: #111522;
+}
+
+.title {
+  font-size: 20px;
+  font-weight: 900;
+  letter-spacing: 2px;
+}
+
+.subtitle {
+  color: #7f879c;
+  font-size: 10px;
+  letter-spacing: 1px;
+  margin-top: 3px;
+}
+
+.headerRight {
+  text-align: right;
+}
+
+.headerLabel {
+  color: #747c91;
+  font-size: 9px;
+  letter-spacing: 1px;
+}
+
+#densityDisplay {
+  font-size: 20px;
+  font-weight: 900;
+}
+
+/* =========================
+   SCREENS
+========================= */
+
+.screen {
+  display: none;
+  flex: 1;
+  min-height: 0;
+}
+
+.screen.active {
+  display: flex;
+}
+
+/* =========================
+   HOME
+========================= */
+
+#home {
+  flex-direction: column;
+  justify-content: center;
+  padding: 24px;
+  overflow-y: auto;
+}
+
+.hero {
+  margin-bottom: 28px;
+}
+
+.hero h1 {
+  margin: 0;
+  font-size: clamp(42px, 11vw, 76px);
+  letter-spacing: -3px;
+}
+
+.hero p {
+  max-width: 650px;
+  color: #a6adbf;
+  line-height: 1.55;
+  margin: 12px 0 0;
+}
+
+.panel {
+  background: #111522;
+  border: 1px solid #292e40;
+  border-radius: 15px;
+  padding: 16px;
+  margin-bottom: 14px;
+}
+
+.panelTitle {
+  color: #7f879c;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 1.5px;
+  margin-bottom: 11px;
+}
+
+.optionGrid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+}
+
+.option {
+  min-height: 48px;
+  border: 1px solid #343a50;
+  border-radius: 10px;
+  background: #181c29;
+  color: #fff;
+  font-weight: 800;
+}
+
+.option.selected {
+  background: #2a3042;
+  border-color: #fff;
+}
+
+#startButton {
+  min-height: 62px;
+  width: 100%;
+  border: 0;
+  border-radius: 13px;
+  background: #fff;
+  color: #090b12;
+  font-weight: 900;
+  font-size: 17px;
+  letter-spacing: 1px;
+}
+
+/* =========================
+   TRAINING SCREEN
+========================= */
+
+#training {
+  flex-direction: column;
+}
+
+.trainingHUD {
+  min-height: 55px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  border-bottom: 1px solid #292e40;
+}
+
+.hudBox {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: #111522;
+  border-right: 1px solid #292e40;
+}
+
+.hudBox:last-child {
+  border-right: 0;
+}
+
+.hudLabel {
+  color: #747c91;
+  font-size: 9px;
+  letter-spacing: 1px;
+}
+
+.hudValue {
+  margin-top: 2px;
+  font-size: 16px;
+  font-weight: 900;
+}
+
+#trainingArea {
+  flex: 1;
+  min-height: 0;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  padding: 20px;
+  background:
+    radial-gradient(circle at center, #181d2d 0%, #090b12 70%);
+}
+
+#phase {
+  position: absolute;
+  top: 22px;
+  color: #777f94;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 2px;
+}
+
+#cueCard {
+  width: min(92%, 680px);
+  min-height: 190px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid #343a50;
+  border-radius: 22px;
+  background: #111522;
+  text-align: center;
+  padding: 24px;
+  transition: transform .12s ease;
+}
+
+#cueType {
+  color: #7f879c;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 2px;
+  margin-bottom: 12px;
+}
+
+#cueText {
+  font-size: clamp(34px, 10vw, 70px);
+  font-weight: 1000;
+  letter-spacing: -2px;
+  line-height: 1;
+}
+
+#cueDetail {
+  color: #a5adbf;
+  font-size: 13px;
+  margin-top: 15px;
+}
+
+#countdown {
+  margin-top: 22px;
+  min-height: 32px;
+  color: #777f94;
+  font-size: 14px;
+  font-weight: 800;
+}
+
+.flash {
+  animation: cueFlash .22s ease-out;
+}
+
+@keyframes cueFlash {
+  0% {
+    transform: scale(.92);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+#feedback {
+  position: absolute;
+  bottom: 18px;
+  left: 50%;
+  transform: translateX(-50%);
+  color: #aeb5c8;
+  font-size: 11px;
+  letter-spacing: 1px;
+  opacity: 0;
+}
+
+#feedback.show {
+  animation: feedback .5s ease-out;
+}
+
+@keyframes feedback {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, 8px);
+  }
+  30% {
+    opacity: 1;
+    transform: translate(-50%, 0);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -5px);
+  }
+}
+
+/* =========================
+   ACTION BUTTONS
+========================= */
+
+#actionPanel {
+  padding: 10px;
+  border-top: 1px solid #292e40;
+  background: #111522;
+}
+
+.actionGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+}
+
+.actionButton {
+  min-height: 54px;
+  border: 1px solid #343a50;
+  border-radius: 11px;
+  background: #181c29;
+  color: #fff;
+  font-size: 13px;
+  font-weight: 900;
+}
+
+.actionButton:active {
+  transform: scale(.96);
+  background: #2a3042;
+}
+
+#exitButton {
+  width: 100%;
+  margin-top: 8px;
+  min-height: 34px;
+  border: 0;
+  background: transparent;
+  color: #70788c;
+  font-size: 10px;
+}
+
+/* =========================
+   RESULTS
+========================= */
+
+#results {
+  flex-direction: column;
+  overflow-y: auto;
+  padding: 24px;
+}
+
+#results h1 {
+  margin: 0;
+  font-size: 38px;
+}
+
+#resultMessage {
+  color: #929aae;
+  margin: 8px 0 22px;
+}
+
+.resultGrid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 9px;
+}
+
+.resultCard {
+  background: #111522;
+  border: 1px solid #292e40;
+  border-radius: 13px;
+  padding: 16px;
+}
+
+.resultLabel {
+  color: #747c91;
+  font-size: 9px;
+  letter-spacing: 1px;
+}
+
+.resultValue {
+  font-size: 26px;
+  font-weight: 900;
+  margin-top: 4px;
+}
+
+.resultButtons {
+  margin-top: 20px;
+}
+
+.resultButtons button {
+  width: 100%;
+  min-height: 55px;
+  border-radius: 12px;
+  font-weight: 900;
+}
+
+#againButton {
+  border: 0;
+  background: #fff;
+  color: #090b12;
+  margin-bottom: 9px;
+}
+
+#homeButton {
+  border: 1px solid #343a50;
+  background: #181c29;
+  color: #fff;
+}
+
+@media (max-width: 450px) {
+
+  .actionButton {
+    font-size: 11px;
+  }
+
+  #cueCard {
+    min-height: 175px;
+  }
+
+}
+</style>
+</head>
+
+<body>
+
+<div id="app">
+
+<header>
+  <div>
+    <div class="title">T-CHAMBER</div>
+    <div class="subtitle">CUE-BASED TRAINING ENGINE</div>
+  </div>
+
+  <div class="headerRight">
+    <div class="headerLabel">DENSITY</div>
+    <div id="densityDisplay">1×</div>
+  </div>
+</header>
+
+
+<!-- =====================================================
+     HOME
+===================================================== -->
+
+<section id="home" class="screen active">
+
+  <div class="hero">
+
+    <h1>T-Chamber</h1>
+
+    <p>
+      Follow the cue. Perform the movement.
+      Reset. The Chamber continuously changes the
+      training demand.
+    </p>
+
+  </div>
+
+
+  <div class="panel">
+
+    <div class="panelTitle">
+      TRAINING DENSITY
+    </div>
+
+    <div class="optionGrid">
+
+      <button class="option densityOption selected"
+              data-density="1">
+        1×
+      </button>
+
+      <button class="option densityOption"
+              data-density="2">
+        2×
+      </button>
+
+      <button class="option densityOption"
+              data-density="3">
+        3×
+      </button>
+
+      <button class="option densityOption"
+              data-density="5">
+        5×
+      </button>
+
+    </div>
+
+  </div>
+
+
+  <div class="panel">
+
+    <div class="panelTitle">
+      SESSION
+    </div>
+
+    <div class="optionGrid">
+
+      <button class="option durationOption"
+              data-duration="60">
+        1 MIN
+      </button>
+
+      <button class="option durationOption selected"
+              data-duration="180">
+        3 MIN
+      </button>
+
+      <button class="option durationOption"
+              data-duration="300">
+        5 MIN
+      </button>
+
+      <button class="option durationOption"
+              data-duration="600">
+        10 MIN
+      </button>
+
+    </div>
+
+  </div>
+
+
+  <button id="startButton">
+    ENTER CHAMBER
+  </button>
+
+</section>
+
+
+<!-- =====================================================
+     TRAINING
+===================================================== -->
+
+<section id="training" class="screen">
+
+  <div class="trainingHUD">
+
+    <div class="hudBox">
+      <div class="hudLabel">TIME</div>
+      <div class="hudValue" id="timeValue">0:00</div>
+    </div>
+
+    <div class="hudBox">
+      <div class="hudLabel">CUES</div>
+      <div class="hudValue" id="cueCount">0</div>
+    </div>
+
+    <div class="hudBox">
+      <div class="hudLabel">DENSITY</div>
+      <div class="hudValue" id="liveDensity">1×</div>
+    </div>
+
+  </div>
+
+
+  <div id="trainingArea">
+
+    <div id="phase">
+      READY
+    </div>
+
+    <div id="cueCard">
+
+      <div id="cueType">
+        CHAMBER
+      </div>
+
+      <div id="cueText">
+        READY
+      </div>
+
+      <div id="cueDetail">
+        Prepare yourself.
+      </div>
+
+    </div>
+
+    <div id="countdown"></div>
+
+    <div id="feedback"></div>
+
+  </div>
+
+
+  <div id="actionPanel">
+
+    <div class="actionGrid">
+
+      <button class="actionButton"
+              data-action="LEFT">
+        ← LEFT
+      </button>
+
+      <button class="actionButton"
+              data-action="FORWARD">
+        ↑ FORWARD
+      </button>
+
+      <button class="actionButton"
+              data-action="RIGHT">
+        RIGHT →
+      </button>
+
+      <button class="actionButton"
+              data-action="BACK">
+        ↓ BACK
+      </button>
+
+      <button class="actionButton"
+              data-action="GUARD">
+        GUARD
+      </button>
+
+      <button class="actionButton"
+              data-action="DUCK">
+        DUCK
+      </button>
+
+      <button class="actionButton"
+              data-action="SQUAT">
+        SQUAT
+      </button>
+
+      <button class="actionButton"
+              data-action="BURST">
+        BURST
+      </button>
+
+      <button class="actionButton"
+              data-action="RESET">
+        RESET
+      </button>
+
+    </div>
+
+    <button id="exitButton">
+      EXIT CHAMBER
+    </button>
+
+  </div>
+
+</section>
+
+
+<!-- =====================================================
+     RESULTS
+===================================================== -->
+
+<section id="results" class="screen">
+
+  <h1>Chamber Complete</h1>
+
+  <div id="resultMessage">
+    Session finished.
+  </div>
+
+
+  <div class="resultGrid">
+
+    <div class="resultCard">
+      <div class="resultLabel">REAL TIME</div>
+      <div class="resultValue" id="resultTime">
+        0:00
+      </div>
+    </div>
+
+    <div class="resultCard">
+      <div class="resultLabel">DENSITY</div>
+      <div class="resultValue" id="resultDensity">
+        1×
+      </div>
+    </div>
+
+    <div class="resultCard">
+      <div class="resultLabel">CUES</div>
+      <div class="resultValue" id="resultCues">
+        0
+      </div>
+    </div>
+
+    <div class="resultCard">
+      <div class="resultLabel">RESPONSES</div>
+      <div class="resultValue" id="resultResponses">
+        0
+      </div>
+    </div>
+
+    <div class="resultCard">
+      <div class="resultLabel">CORRECT</div>
+      <div class="resultValue" id="resultCorrect">
+        0
+      </div>
+    </div>
+
+    <div class="resultCard">
+      <div class="resultLabel">ACCURACY</div>
+      <div class="resultValue" id="resultAccuracy">
+        0%
+      </div>
+    </div>
+
+  </div>
+
+
+  <div class="resultButtons">
+
+    <button id="againButton">
+      RUN AGAIN
+    </button>
+
+    <button id="homeButton">
+      RETURN HOME
+    </button>
+
+  </div>
+
+</section>
+
+</div>
+
+
+<script>
+/*
+===========================================================
+T-CHAMBER
+SINGLE-FILE CUE ENGINE
+
+CORE LOOP:
+
+    CUE
+      ↓
+    ACTION
+      ↓
+    EVALUATION
+      ↓
+    NEXT CUE
+
+No Scouter.
+No external engine.
+No API.
+No accounts.
+
+The Chamber itself owns the training logic.
+===========================================================
+*/
+
+
+/* =========================================================
+   CHAMBER STATE
+========================================================= */
+
+const Chamber = {
+
+  density: 1,
+
+  duration: 180,
+
+  running: false,
+
+  startTime: 0,
+
+  elapsed: 0,
+
+  timer: null,
+
+  nextCueTimer: null,
+
+  responseWindowTimer: null,
+
+  cueCount: 0,
+
+  responses: 0,
+
+  correct: 0,
+
+  currentCue: null,
+
+  currentCueStarted: 0,
+
+  respondedToCurrentCue: false
+
+};
+
+
+/* =========================================================
+   CUE LIBRARY
+========================================================= */
+
+const CUES = [
+
+  {
+    type: "MOVEMENT",
+    text: "STEP LEFT",
+    action: "LEFT",
+    detail: "Move sharply to your left."
+  },
+
+  {
+    type: "MOVEMENT",
+    text: "STEP RIGHT",
+    action: "RIGHT",
+    detail: "Move sharply to your right."
+  },
+
+  {
+    type: "MOVEMENT",
+    text: "STEP FORWARD",
+    action: "FORWARD",
+    detail: "Drive forward under control."
+  },
+
+  {
+    type: "MOVEMENT",
+    text: "STEP BACK",
+    action: "BACK",
+    detail: "Move backward and reset your stance."
+  },
+
+  {
+    type: "DEFENSE",
+    text: "GUARD",
+    action: "GUARD",
+    detail: "Raise your guard and stabilize."
+  },
+
+  {
+    type: "DEFENSE",
+    text: "DUCK",
+    action: "DUCK",
+    detail: "Drop your level quickly."
+  },
+
+  {
+    type: "CONDITIONING",
+    text: "SQUAT",
+    action: "SQUAT",
+    detail: "Perform one controlled squat."
+  },
+
+  {
+    type: "POWER",
+    text: "BURST",
+    action: "BURST",
+    detail: "Perform a short explosive movement."
+  },
+
+  {
+    type: "RESET",
+    text: "RESET",
+    action: "RESET",
+    detail: "Return to your neutral stance."
+  }
+
+];
+
+
+/* =========================================================
+   COMBINATION CUES
+========================================================= */
+
+const COMBOS = [
+
+  {
+    type: "COMBO",
+    text: "LEFT + GUARD",
+    action: "LEFT_GUARD",
+    detail: "Step left, then immediately guard."
+  },
+
+  {
+    type: "COMBO",
+    text: "RIGHT + GUARD",
+    action: "RIGHT_GUARD",
+    detail: "Step right, then immediately guard."
+  },
+
+  {
+    type: "COMBO",
+    text: "BACK + DUCK",
+    action: "BACK_DUCK",
+    detail: "Step back and drop your level."
+  },
+
+  {
+    type: "COMBO",
+    text: "FORWARD + BURST",
+    action: "FORWARD_BURST",
+    detail: "Drive forward with a short burst."
+  }
+
+];
+
+
+/* =========================================================
+   DOM
+========================================================= */
+
+const home =
+  document.getElementById("home");
+
+const training =
+  document.getElementById("training");
+
+const results =
+  document.getElementById("results");
+
+const densityDisplay =
+  document.getElementById("densityDisplay");
+
+const startButton =
+  document.getElementById("startButton");
+
+const timeValue =
+  document.getElementById("timeValue");
+
+const cueCount =
+  document.getElementById("cueCount");
+
+const liveDensity =
+  document.getElementById("liveDensity");
+
+const phase =
+  document.getElementById("phase");
+
+const cueCard =
+  document.getElementById("cueCard");
+
+const cueType =
+  document.getElementById("cueType");
+
+const cueText =
+  document.getElementById("cueText");
+
+const cueDetail =
+  document.getElementById("cueDetail");
+
+const countdown =
+  document.getElementById("countdown");
+
+const feedback =
+  document.getElementById("feedback");
+
+const resultTime =
+  document.getElementById("resultTime");
+
+const resultDensity =
+  document.getElementById("resultDensity");
+
+const resultCues =
+  document.getElementById("resultCues");
+
+const resultResponses =
+  document.getElementById("resultResponses");
+
+const resultCorrect =
+  document.getElementById("resultCorrect");
+
+const resultAccuracy =
+  document.getElementById("resultAccuracy");
+
+const resultMessage =
+  document.getElementById("resultMessage");
+
+
+/* =========================================================
+   SCREEN CONTROL
+========================================================= */
+
+function showScreen(screen) {
+
+  home.classList.remove("active");
+
+  training.classList.remove("active");
+
+  results.classList.remove("active");
+
+  screen.classList.add("active");
+
+}
+
+
+/* =========================================================
+   FORMAT TIME
+========================================================= */
+
+function formatTime(seconds) {
+
+  seconds =
+    Math.max(
+      0,
+      Math.floor(seconds)
+    );
+
+  const minutes =
+    Math.floor(seconds / 60);
+
+  const secs =
+    seconds % 60;
+
+  return (
+    minutes +
+    ":" +
+    String(secs).padStart(2, "0")
+  );
+
+}
+
+
+/* =========================================================
+   DENSITY
+========================================================= */
+
+document
+  .querySelectorAll(".densityOption")
+  .forEach(button => {
+
+    button.addEventListener(
+      "click",
+      () => {
+
+        document
+          .querySelectorAll(".densityOption")
+          .forEach(b =>
+            b.classList.remove("selected")
+          );
+
+        button.classList.add("selected");
+
+        Chamber.density =
+          Number(
+            button.dataset.density
+          );
+
+        densityDisplay.textContent =
+          Chamber.density + "×";
+
+      }
+    );
+
+  });
+
+
+/* =========================================================
+   DURATION
+========================================================= */
+
+document
+  .querySelectorAll(".durationOption")
+  .forEach(button => {
+
+    button.addEventListener(
+      "click",
+      () => {
+
+        document
+          .querySelectorAll(".durationOption")
+          .forEach(b =>
+            b.classList.remove("selected")
+          );
+
+        button.classList.add("selected");
+
+        Chamber.duration =
+          Number(
+            button.dataset.duration
+          );
+
+      }
+    );
+
+  });
+
+
+/* =========================================================
+   CHAMBER TIMING
+
+   Higher density = shorter time between cues.
+
+========================================================= */
+
+function getCueInterval() {
+
+  const intervals = {
+
+    1: 3000,
+
+    2: 2200,
+
+    3: 1500,
+
+    5: 900
+
+  };
+
+  return (
+    intervals[Chamber.density]
+    || 3000
+  );
+
+}
+
+
+/* =========================================================
+   RESPONSE WINDOW
+
+   This is how long the player has to respond
+   before the Chamber moves on.
+
+========================================================= */
+
+function getResponseWindow() {
+
+  const windows = {
+
+    1: 2600,
+
+    2: 1900,
+
+    3: 1300,
+
+    5: 800
+
+  };
+
+  return (
+    windows[Chamber.density]
+    || 2600
+  );
+
+}
+
+
+/* =========================================================
+   CUE SELECTION
+========================================================= */
+
+function getNextCue() {
+
+  /*
+    At higher densities, combinations become
+    more likely.
+
+    This keeps the early experience simple
+    while making advanced density more complex.
+  */
+
+  const comboChance =
+    Chamber.density >= 3
+      ? 0.25
+      : 0.08;
+
+
+  if (
+    Math.random() <
+    comboChance
+  ) {
+
+    return (
+      COMBOS[
+        Math.floor(
+          Math.random() *
+          COMBOS.length
+        )
+      ]
+    );
+
+  }
+
+
+  return (
+    CUES[
+      Math.floor(
+        Math.random() *
+        CUES.length
+      )
+    ]
+  );
+
+}
+
+
+/* =========================================================
+   DISPLAY CUE
+========================================================= */
+
+function displayCue(cue) {
+
+  Chamber.currentCue = cue;
+
+  Chamber.currentCueStarted =
+    Date.now();
+
+  Chamber.respondedToCurrentCue =
+    false;
+
+  cueType.textContent =
+    cue.type;
+
+  cueText.textContent =
+    cue.text;
+
+  cueDetail.textContent =
+    cue.detail;
+
+  phase.textContent =
+    "ACT";
+
+  countdown.textContent =
+    "";
+
+  cueCard.classList.remove("flash");
+
+  void cueCard.offsetWidth;
+
+  cueCard.classList.add("flash");
+
+  Chamber.cueCount++;
+
+  cueCount.textContent =
+    Chamber.cueCount;
+
+}
+
+
+/* =========================================================
+   SHOW NEXT CUE
+========================================================= */
+
+function nextCue() {
+
+  if (!Chamber.running) {
+    return;
+  }
+
+  clearTimeout(
+    Chamber.responseWindowTimer
+  );
+
+  const cue =
+    getNextCue();
+
+  displayCue(cue);
+
+  /*
+    Give the player a response window.
+  */
+
+  Chamber.responseWindowTimer =
+    setTimeout(
+      () => {
+
+        if (
+          !Chamber.respondedToCurrentCue &&
+          Chamber.running
+        ) {
+
+          showFeedback("NEXT CUE");
+
+        }
+
+      },
+      getResponseWindow()
+    );
+
+
+  /*
+    Schedule the next cue.
+
+    Density determines how quickly
+    the next instruction arrives.
+  */
+
+  Chamber.nextCueTimer =
+    setTimeout(
+      nextCue,
+      getCueInterval()
+    );
+
+}
+
+
+/* =========================================================
+   PLAYER RESPONSE
+========================================================= */
+
+function respond(action) {
+
+  if (!Chamber.running) {
+    return;
+  }
+
+  if (!Chamber.currentCue) {
+    return;
+  }
+
+  if (Chamber.respondedToCurrentCue) {
+    return;
+  }
+
+  Chamber.respondedToCurrentCue =
+    true;
+
+  Chamber.responses++;
+
+
+  const expected =
+    Chamber.currentCue.action;
+
+
+  let correct = false;
+
+
+  /*
+    Single-action cue.
+  */
+
+  if (action === expected) {
+
+    correct = true;
+
+  }
+
+
+  /*
+    Combination shortcuts.
+
+    For a simple prototype, the player can
+    trigger a combo with either action sequence
+    through the corresponding buttons.
+  */
+
+  if (
+    expected === "LEFT_GUARD" &&
+    action === "LEFT_GUARD"
+  ) {
+
+    correct = true;
+
+  }
+
+  if (
+    expected === "RIGHT_GUARD" &&
+    action === "RIGHT_GUARD"
+  ) {
+
+    correct = true;
+
+  }
+
+  if (
+    expected === "BACK_DUCK" &&
+    action === "BACK_DUCK"
+  ) {
+
+    correct = true;
+
+  }
+
+  if (
+    expected === "FORWARD_BURST" &&
+    action === "FORWARD_BURST"
+  ) {
+
+    correct = true;
+
+  }
+
+
+  if (correct) {
+
+    Chamber.correct++;
+
+    showFeedback("GOOD");
+
+  } else {
+
+    showFeedback("MISS");
+
+  }
+
+}
+
+
+/* =========================================================
+   FEEDBACK
+========================================================= */
+
+function showFeedback(text) {
+
+  feedback.textContent =
+    text;
+
+  feedback.classList.remove(
+    "show"
+  );
+
+  void feedback.offsetWidth;
+
+  feedback.classList.add(
+    "show"
+  );
+
+}
+
+
+/* =========================================================
+   CLOCK
+========================================================= */
+
+function startClock() {
+
+  clearInterval(
+    Chamber.timer
+  );
+
+  Chamber.timer =
+    setInterval(
+      () => {
+
+        if (!Chamber.running) {
+          return;
+        }
+
+        Chamber.elapsed =
+          (
+            Date.now() -
+            Chamber.startTime
+          ) / 1000;
+
+        timeValue.textContent =
+          formatTime(
+            Chamber.elapsed
+          );
+
+
+        if (
+          Chamber.elapsed >=
+          Chamber.duration
+        ) {
+
+          endSession();
+
+        }
+
+      },
+      100
+    );
+
+}
+
+
+/* =========================================================
+   START
+========================================================= */
+
+function startSession() {
+
+  clearInterval(
+    Chamber.timer
+  );
+
+  clearTimeout(
+    Chamber.nextCueTimer
+  );
+
+  clearTimeout(
+    Chamber.responseWindowTimer
+  );
+
+
+  Chamber.running =
+    true;
+
+  Chamber.startTime =
+    Date.now();
+
+  Chamber.elapsed =
+    0;
+
+  Chamber.cueCount =
+    0;
+
+  Chamber.responses =
+    0;
+
+  Chamber.correct =
+    0;
+
+  Chamber.currentCue =
+    null;
+
+  Chamber.respondedToCurrentCue =
+    false;
+
+
+  timeValue.textContent =
+    "0:00";
+
+  cueCount.textContent =
+    "0";
+
+  liveDensity.textContent =
+    Chamber.density + "×";
+
+
+  showScreen(training);
+
+
+  /*
+    Three-second preparation period.
+  */
+
+  phase.textContent =
+    "PREPARE";
+
+  cueText.textContent =
+    "GET READY";
+
+  cueDetail.textContent =
+    "The Chamber will begin.";
+
+  countdown.textContent =
+    "3";
+
+
+  let count = 3;
+
+
+  const prep =
+    setInterval(
+      () => {
+
+        count--;
+
+        if (count > 0) {
+
+          countdown.textContent =
+            count;
+
+        } else {
+
+          clearInterval(prep);
+
+          countdown.textContent =
+            "";
+
+          startClock();
+
+          nextCue();
+
+        }
+
+      },
+      1000
+    );
+
+}
+
+
+/* =========================================================
+   END SESSION
+========================================================= */
+
+function endSession() {
+
+  if (!Chamber.running) {
+    return;
+  }
+
+  Chamber.running =
+    false;
+
+  Chamber.elapsed =
+    (
+      Date.now() -
+      Chamber.startTime
+    ) / 1000;
+
+
+  clearInterval(
+    Chamber.timer
+  );
+
+  clearTimeout(
+    Chamber.nextCueTimer
+  );
+
+  clearTimeout(
+    Chamber.responseWindowTimer
+  );
+
+
+  updateResults();
+
+  showScreen(results);
+
+}
+
+
+/* =========================================================
+   RESULTS
+========================================================= */
+
+function updateResults() {
+
+  const accuracy =
+    Chamber.responses > 0
+      ? Math.round(
+          (
+            Chamber.correct /
+            Chamber.responses
+          ) * 100
+        )
+      : 0;
+
+
+  resultTime.textContent =
+    formatTime(
+      Chamber.elapsed
+    );
+
+  resultDensity.textContent =
+    Chamber.density + "×";
+
+  resultCues.textContent =
+    Chamber.cueCount;
+
+  resultResponses.textContent =
+    Chamber.responses;
+
+  resultCorrect.textContent =
+    Chamber.correct;
+
+  resultAccuracy.textContent =
+    accuracy + "%";
+
+
+  if (accuracy >= 90) {
+
+    resultMessage.textContent =
+      "High response consistency.";
+
+  } else if (accuracy >= 70) {
+
+    resultMessage.textContent =
+      "The cue stream remained manageable.";
+
+  } else if (accuracy >= 50) {
+
+    resultMessage.textContent =
+      "The Chamber is creating meaningful response demand.";
+
+  } else {
+
+    resultMessage.textContent =
+      "The cue density exceeded current response consistency.";
+
+  }
+
+}
+
+
+/* =========================================================
+   EXIT
+========================================================= */
+
+function exitChamber() {
+
+  Chamber.running =
+    false;
+
+  clearInterval(
+    Chamber.timer
+  );
+
+  clearTimeout(
+    Chamber.nextCueTimer
+  );
+
+  clearTimeout(
+    Chamber.responseWindowTimer
+  );
+
+  showScreen(home);
+
+}
+
+
+/* =========================================================
+   ACTION BUTTONS
+========================================================= */
+
+document
+  .querySelectorAll(".actionButton")
+  .forEach(button => {
+
+    button.addEventListener(
+      "pointerdown",
+      event => {
+
+        event.preventDefault();
+
+        respond(
+          button.dataset.action
+        );
+
+      }
+    );
+
+  });
+
+
+/* =========================================================
+   KEYBOARD
+
+   Useful for testing on a computer.
+
+   A = LEFT
+   D = RIGHT
+   W = FORWARD
+   S = BACK
+   G = GUARD
+   Q = DUCK
+   C = SQUAT
+   E = BURST
+   R = RESET
+========================================================= */
+
+document.addEventListener(
+  "keydown",
+  event => {
+
+    if (!Chamber.running) {
+      return;
+    }
+
+    const key =
+      event.key.toLowerCase();
+
+    const actions = {
+
+      a: "LEFT",
+
+      d: "RIGHT",
+
+      w: "FORWARD",
+
+      s: "BACK",
+
+      g: "GUARD",
+
+      q: "DUCK",
+
+      c: "SQUAT",
+
+      e: "BURST",
+
+      r: "RESET"
+
+    };
+
+
+    if (actions[key]) {
+
+      respond(
+        actions[key]
+      );
+
+    }
+
+  }
+);
+
+
+/* =========================================================
+   SWIPE SUPPORT
+
+   Swipe direction counts as movement input.
+========================================================= */
+
+let touchStartX = 0;
+let touchStartY = 0;
+
+const trainingArea =
+  document.getElementById(
+    "trainingArea"
+  );
+
+
+trainingArea.addEventListener(
+  "touchstart",
+  event => {
+
+    const touch =
+      event.changedTouches[0];
+
+    touchStartX =
+      touch.clientX;
+
+    touchStartY =
+      touch.clientY;
+
+  },
+  { passive: true }
+);
+
+
+trainingArea.addEventListener(
+  "touchend",
+  event => {
+
+    if (!Chamber.running) {
+      return;
+    }
+
+    const touch =
+      event.changedTouches[0];
+
+    const dx =
+      touch.clientX -
+      touchStartX;
+
+    const dy =
+      touch.clientY -
+      touchStartY;
+
+    const threshold =
+      35;
+
+
+    if (
+      Math.abs(dx) <
+      threshold &&
+      Math.abs(dy) <
+      threshold
+    ) {
+
+      return;
+
+    }
+
+
+    if (
+      Math.abs(dx) >
+      Math.abs(dy)
+    ) {
+
+      respond(
+        dx > 0
+          ? "RIGHT"
+          : "LEFT"
+      );
+
+    } else {
+
+      respond(
+        dy > 0
+          ? "BACK"
+          : "FORWARD"
+      );
+
+    }
+
+  },
+  { passive: true }
+);
+
+
+/* =========================================================
+   BUTTONS
+========================================================= */
+
+startButton.addEventListener(
+  "click",
+  startSession
+);
+
+
+document
+  .getElementById("exitButton")
+  .addEventListener(
+    "click",
+    exitChamber
+  );
+
+
+document
+  .getElementById("againButton")
+  .addEventListener(
+    "click",
+    startSession
+  );
+
+
+document
+  .getElementById("homeButton")
+  .addEventListener(
+    "click",
+    () => {
+
+      showScreen(home);
+
+    }
+  );
+
+
+/* =========================================================
+   INITIALIZATION
+========================================================= */
+
+densityDisplay.textContent =
+  Chamber.density + "×";
+
+showScreen(home);
+
+</script>
+
+</body>
+</html>
